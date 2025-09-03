@@ -1,0 +1,55 @@
+{
+  "name": "proder-e-ticaret",
+  "version": "1.0.1",
+  "private": true,
+  "author": "Proder",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "concurrently -k -n VITE,ELECTRON -c cyan,magenta \"npm:dev:vite\" \"npm:dev:electron\"",
+    "dev:vite": "vite dev",
+    "dev:electron": "wait-on http://localhost:5173 && cross-env VITE_DEV_SERVER_URL=http://localhost:5173 electron .",
+    "preview": "vite preview",
+    "build:renderer": "vite build",
+    "build": "npm run build:renderer && electron-builder",
+    "pack": "electron-builder --dir",
+    "dist": "npm run build:renderer && electron-builder",
+    "clean": "rimraf dist release .vite .cache node_modules && npm i"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.0",
+    "concurrently": "^9.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3",
+    "rimraf": "^6.0.1",
+    "vite": "^5.4.0",
+    "wait-on": "^8.0.0"
+  },
+  "build": {
+    "appId": "com.proder.eticaret",
+    "productName": "Proder E-ticaret",
+    "directories": { "output": "release" },
+    "files": [
+      "dist/**",
+      "electron/**",
+      "package.json"
+    ],
+    "asar": true,
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
